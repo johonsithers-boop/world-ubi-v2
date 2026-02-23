@@ -1,0 +1,121 @@
+{
+    "common": {
+        "appName": "World UBI Coin",
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "retry": "Try again",
+        "connect": "Connect Wallet",
+        "disconnect": "Disconnect",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "back": "Back"
+    },
+    "nav": {
+        "earn": "Earn",
+        "govern": "Govern",
+        "menu": "Menu"
+    },
+    "home": {
+        "title": "World UBI Coin",
+        "subtitle": "Universal Basic Income for Everyone",
+        "description": "Earn passive income, participate in governance, and contribute to a global economy through World ID verification.",
+        "connectButton": "Connect with World ID",
+        "features": {
+            "basicIncome": {
+                "title": "Basic Income",
+                "description": "Receive regular UBI payments verified through World ID"
+            },
+            "governance": {
+                "title": "Governance",
+                "description": "Vote on proposals and shape the future of UBI"
+            },
+            "staking": {
+                "title": "Staking",
+                "description": "Stake your tokens to earn additional rewards"
+            }
+        }
+    },
+    "earn": {
+        "title": "Earn",
+        "tabs": {
+            "basicIncome": {
+                "tabTitle": "Basic Income",
+                "title": "Universal Basic Income",
+                "subtitle": "Earn passive income through World ID verification",
+                "setupSubtitle": "Set up your UBI stream to start earning",
+                "activateButton": "Activate UBI",
+                "activating": "Activating...",
+                "claimableSubtitle": "Available to claim",
+                "claimButton": "Claim UBI",
+                "claiming": "Claiming...",
+                "activated": "UBI Activated",
+                "nextClaim": "Next claim available in"
+            },
+            "savings": {
+                "tabTitle": "Savings",
+                "title": "Stake & Earn",
+                "subtitle": "Stake your tokens to earn rewards",
+                "stakedBalance": "Staked Balance",
+                "availableRewards": "Available Rewards",
+                "stakeButton": "Stake Tokens",
+                "unstakeButton": "Unstake",
+                "claimRewards": "Claim Rewards",
+                "apy": "Current APY"
+            },
+            "contribute": {
+                "tabTitle": "Contribute",
+                "title": "Contribute",
+                "subtitle": "Support the UBI ecosystem",
+                "donateButton": "Donate to UBI Pool",
+                "referralTitle": "Referral Program",
+                "referralSubtitle": "Invite friends and earn rewards",
+                "copyLink": "Copy Referral Link"
+            }
+        }
+    },
+    "govern": {
+        "title": "Governance",
+        "subtitle": "Vote on proposals with your verified identity",
+        "activePolls": "Active Polls",
+        "pastPolls": "Past Polls",
+        "noPolls": "No active polls at the moment",
+        "vote": "Vote",
+        "voted": "Voted",
+        "endDate": "Ends",
+        "totalVotes": "Total Votes"
+    },
+    "menu": {
+        "title": "Settings",
+        "profile": "Profile",
+        "wallet": "Wallet",
+        "language": "Language",
+        "faq": "FAQ",
+        "about": "About",
+        "logout": "Sign Out"
+    },
+    "faq": {
+        "title": "FAQ",
+        "questions": [
+            {
+                "q": "What is World UBI Coin?",
+                "a": "World UBI Coin is a Universal Basic Income platform that distributes regular payments to verified World ID holders."
+            },
+            {
+                "q": "How do I start receiving UBI?",
+                "a": "Connect your World ID wallet and activate your UBI stream on the Earn page."
+            },
+            {
+                "q": "How often can I claim?",
+                "a": "UBI accumulates continuously and can be claimed at any time."
+            },
+            {
+                "q": "What is staking?",
+                "a": "Staking allows you to lock your tokens to earn additional rewards over time."
+            }
+        ]
+    },
+    "language": {
+        "title": "Select Language",
+        "current": "Current"
+    }
+}

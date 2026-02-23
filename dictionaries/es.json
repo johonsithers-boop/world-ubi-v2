@@ -1,0 +1,121 @@
+{
+    "common": {
+        "appName": "World UBI Coin",
+        "loading": "Cargando...",
+        "error": "Ocurrió un error",
+        "retry": "Intentar de nuevo",
+        "connect": "Conectar Cartera",
+        "disconnect": "Desconectar",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "back": "Volver"
+    },
+    "nav": {
+        "earn": "Ganar",
+        "govern": "Gobernar",
+        "menu": "Menú"
+    },
+    "home": {
+        "title": "World UBI Coin",
+        "subtitle": "Ingreso Básico Universal para Todos",
+        "description": "Gana ingresos pasivos, participa en la gobernanza y contribuye a una economía global a través de la verificación de World ID.",
+        "connectButton": "Conectar con World ID",
+        "features": {
+            "basicIncome": {
+                "title": "Ingreso Básico",
+                "description": "Recibe pagos regulares de IBU verificados a través de World ID"
+            },
+            "governance": {
+                "title": "Gobernanza",
+                "description": "Vota propuestas y moldea el futuro del IBU"
+            },
+            "staking": {
+                "title": "Staking",
+                "description": "Stakeá tus tokens para ganar recompensas adicionales"
+            }
+        }
+    },
+    "earn": {
+        "title": "Ganar",
+        "tabs": {
+            "basicIncome": {
+                "tabTitle": "Ingreso Básico",
+                "title": "Ingreso Básico Universal",
+                "subtitle": "Gana ingresos pasivos a través de la verificación de World ID",
+                "setupSubtitle": "Configura tu flujo de IBU para empezar a ganar",
+                "activateButton": "Activar IBU",
+                "activating": "Activando...",
+                "claimableSubtitle": "Disponible para reclamar",
+                "claimButton": "Reclamar IBU",
+                "claiming": "Reclamando...",
+                "activated": "IBU Activado",
+                "nextClaim": "Próximo reclamo disponible en"
+            },
+            "savings": {
+                "tabTitle": "Ahorros",
+                "title": "Stake y Gana",
+                "subtitle": "Stakeá tus tokens para ganar recompensas",
+                "stakedBalance": "Balance Stakeado",
+                "availableRewards": "Recompensas Disponibles",
+                "stakeButton": "Stakear Tokens",
+                "unstakeButton": "Retirar Stake",
+                "claimRewards": "Reclamar Recompensas",
+                "apy": "APY Actual"
+            },
+            "contribute": {
+                "tabTitle": "Contribuir",
+                "title": "Contribuir",
+                "subtitle": "Apoya el ecosistema de IBU",
+                "donateButton": "Donar al Pool de IBU",
+                "referralTitle": "Programa de Referidos",
+                "referralSubtitle": "Invita amigos y gana recompensas",
+                "copyLink": "Copiar Enlace de Referido"
+            }
+        }
+    },
+    "govern": {
+        "title": "Gobernanza",
+        "subtitle": "Vota propuestas con tu identidad verificada",
+        "activePolls": "Encuestas Activas",
+        "pastPolls": "Encuestas Pasadas",
+        "noPolls": "No hay encuestas activas en este momento",
+        "vote": "Votar",
+        "voted": "Votado",
+        "endDate": "Termina",
+        "totalVotes": "Votos Totales"
+    },
+    "menu": {
+        "title": "Configuración",
+        "profile": "Perfil",
+        "wallet": "Cartera",
+        "language": "Idioma",
+        "faq": "Preguntas Frecuentes",
+        "about": "Acerca de",
+        "logout": "Cerrar Sesión"
+    },
+    "faq": {
+        "title": "Preguntas Frecuentes",
+        "questions": [
+            {
+                "q": "¿Qué es World UBI Coin?",
+                "a": "World UBI Coin es una plataforma de Ingreso Básico Universal que distribuye pagos regulares a titulares verificados de World ID."
+            },
+            {
+                "q": "¿Cómo empiezo a recibir IBU?",
+                "a": "Conecta tu cartera de World ID y activa tu flujo de IBU en la página Ganar."
+            },
+            {
+                "q": "¿Con qué frecuencia puedo reclamar?",
+                "a": "El IBU se acumula continuamente y puede reclamarse en cualquier momento."
+            },
+            {
+                "q": "¿Qué es el staking?",
+                "a": "El staking te permite bloquear tus tokens para ganar recompensas adicionales con el tiempo."
+            }
+        ]
+    },
+    "language": {
+        "title": "Seleccionar Idioma",
+        "current": "Actual"
+    }
+}
