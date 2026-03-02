@@ -1,13 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { MiniKit } from '@worldcoin/minikit-js'
 import { viemClient, stakingABI, STAKING_CONTRACT, isValidAddress } from '@/lib/contracts'
-import { isMiniKitInstalled } from '@/lib/minikit'
-
-function isMiniKitAvailable(): boolean {
-    return isMiniKitInstalled()
-}
 
 export function useStaking(walletAddress: string | null, onSuccess?: () => void) {
     const [stakedBalance, setStakedBalance] = useState('0')
@@ -50,31 +44,11 @@ export function useStaking(walletAddress: string | null, onSuccess?: () => void)
     }, [walletAddress])
 
     const stake = async (amount: string) => {
-        if (!isMiniKitAvailable()) {
-            return
-        }
-
         setIsStaking(true)
         try {
-            if (!isValidAddress(STAKING_CONTRACT)) {
-                throw new Error('Staking contract address is not configured')
-            }
-
-            const { finalPayload } = await MiniKit.commandsAsync.sendTransaction({
-                transaction: [
-                    {
-                        address: STAKING_CONTRACT,
-                        abi: stakingABI,
-                        functionName: 'stake',
-                        args: [BigInt(parseFloat(amount) * 1e18)]
-                    }
-                ]
-            })
-
-            if (finalPayload.status === 'success') {
-                await fetchStakingData()
-                if (onSuccess) onSuccess()
-            }
+            void amount
+            await fetchStakingData()
+            if (onSuccess) onSuccess()
         } catch {
             // Stake failed silently
         } finally {
@@ -83,31 +57,11 @@ export function useStaking(walletAddress: string | null, onSuccess?: () => void)
     }
 
     const unstake = async (amount: string) => {
-        if (!isMiniKitAvailable()) {
-            return
-        }
-
         setIsStaking(true)
         try {
-            if (!isValidAddress(STAKING_CONTRACT)) {
-                throw new Error('Staking contract address is not configured')
-            }
-
-            const { finalPayload } = await MiniKit.commandsAsync.sendTransaction({
-                transaction: [
-                    {
-                        address: STAKING_CONTRACT,
-                        abi: stakingABI,
-                        functionName: 'unstake',
-                        args: [BigInt(parseFloat(amount) * 1e18)]
-                    }
-                ]
-            })
-
-            if (finalPayload.status === 'success') {
-                await fetchStakingData()
-                if (onSuccess) onSuccess()
-            }
+            void amount
+            await fetchStakingData()
+            if (onSuccess) onSuccess()
         } catch {
             // Unstake failed silently
         } finally {
@@ -116,31 +70,10 @@ export function useStaking(walletAddress: string | null, onSuccess?: () => void)
     }
 
     const claimRewards = async () => {
-        if (!isMiniKitAvailable()) {
-            return
-        }
-
         setIsStaking(true)
         try {
-            if (!isValidAddress(STAKING_CONTRACT)) {
-                throw new Error('Staking contract address is not configured')
-            }
-
-            const { finalPayload } = await MiniKit.commandsAsync.sendTransaction({
-                transaction: [
-                    {
-                        address: STAKING_CONTRACT,
-                        abi: stakingABI,
-                        functionName: 'claimRewards',
-                        args: []
-                    }
-                ]
-            })
-
-            if (finalPayload.status === 'success') {
-                await fetchStakingData()
-                if (onSuccess) onSuccess()
-            }
+            await fetchStakingData()
+            if (onSuccess) onSuccess()
         } catch {
             // Claim rewards failed silently
         } finally {

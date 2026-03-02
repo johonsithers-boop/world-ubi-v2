@@ -1,6 +1,6 @@
 {
     "common": {
-        "appName": "World UBI Coin",
+        "appName": "Base UBI",
         "loading": "Loading...",
         "error": "An error occurred",
         "retry": "Try again",
@@ -16,14 +16,14 @@
         "menu": "Menu"
     },
     "home": {
-        "title": "World UBI Coin",
+        "title": "Base UBI",
         "subtitle": "Universal Basic Income for Everyone",
-        "description": "Earn passive income, participate in governance, and contribute to a global economy through World ID verification.",
-        "connectButton": "Connect with World ID",
+        "description": "Track balances, participate in governance, and support a global UBI economy on Base.",
+        "connectButton": "Continue",
         "features": {
             "basicIncome": {
                 "title": "Basic Income",
-                "description": "Receive regular UBI payments verified through World ID"
+                "description": "Receive regular UBI distribution tracked on-chain"
             },
             "governance": {
                 "title": "Governance",
@@ -41,7 +41,7 @@
             "basicIncome": {
                 "tabTitle": "Basic Income",
                 "title": "Universal Basic Income",
-                "subtitle": "Earn passive income through World ID verification",
+                "subtitle": "Earn passive income with on-chain accounting",
                 "setupSubtitle": "Set up your UBI stream to start earning",
                 "activateButton": "Activate UBI",
                 "activating": "Activating...",
@@ -75,7 +75,7 @@
     },
     "govern": {
         "title": "Governance",
-        "subtitle": "Vote on proposals with your verified identity",
+        "subtitle": "Vote on proposals with your wallet identity",
         "activePolls": "Active Polls",
         "pastPolls": "Past Polls",
         "noPolls": "No active polls at the moment",
@@ -97,12 +97,12 @@
         "title": "FAQ",
         "questions": [
             {
-                "q": "What is World UBI Coin?",
-                "a": "World UBI Coin is a Universal Basic Income platform that distributes regular payments to verified World ID holders."
+                "q": "What is Base UBI?",
+                "a": "Base UBI is a Universal Basic Income platform focused on Base network users and USDC-denominated flows."
             },
             {
                 "q": "How do I start receiving UBI?",
-                "a": "Connect your World ID wallet and activate your UBI stream on the Earn page."
+                "a": "Open the Earn page and activate your UBI stream using your configured Base wallet."
             },
             {
                 "q": "How often can I claim?",

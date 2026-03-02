@@ -98,7 +98,7 @@ export default function HomePage({
 
             {/* Footer */}
             <footer className="py-4 text-center text-sm text-gray-400">
-                Powered by World ID
+                Powered by Base
             </footer>
         </div>
     )

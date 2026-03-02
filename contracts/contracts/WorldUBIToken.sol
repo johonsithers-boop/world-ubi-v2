@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /**
  * @title WorldUBIToken
- * @notice ERC-20 token with daily UBI claim mechanism for World ID verified users.
+ * @notice ERC-20 token with daily UBI claim mechanism for verified users.
  *
  * Frontend ABI surface (must match lib/contracts.ts):
  *   - available(address) -> uint256
@@ -98,7 +98,7 @@ contract WorldUBIToken is ERC20, Ownable, ReentrancyGuard {
 
     /**
      * @notice Register the caller for UBI. Must be called before the first claim.
-     * @dev In a production deployment, this would verify a World ID proof.
+     * @dev In a production deployment, this would verify a proof-of-personhood credential.
      *      For the testnet version, any address can self-register once.
      */
     function setup() external {

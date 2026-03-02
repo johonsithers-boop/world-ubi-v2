@@ -11,6 +11,7 @@ import { ContributeTab } from '@/components/earn/ContributeTab'
 import { formatBalance } from '@/lib/utils'
 import { PiWallet } from 'react-icons/pi'
 import { PageProps, CommonParams } from '@/lib/types'
+import { PRIMARY_TOKEN_SYMBOL } from '@/lib/baseWallet'
 
 import Link from 'next/link'
 
@@ -57,7 +58,7 @@ export default function EarnPage({
                     >
                         <PiWallet className="h-5 w-5 text-gray-500" />
                         <span className="font-semibold text-gray-900">
-                            {formatBalance(tokenBalance)} WLD
+                            {formatBalance(tokenBalance)} {PRIMARY_TOKEN_SYMBOL}
                         </span>
                     </Link>
                 </div>

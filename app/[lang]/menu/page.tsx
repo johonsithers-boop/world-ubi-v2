@@ -56,7 +56,7 @@ export default function MenuPage({
                             <PiUser className="h-7 w-7 text-white" />
                         </div>
                         <div>
-                            <p className="font-semibold text-gray-900">World ID User</p>
+                            <p className="font-semibold text-gray-900">Base Wallet User</p>
                             <p className="text-sm text-gray-500 font-mono">
                                 {formatAddress(walletAddress)}
                             </p>

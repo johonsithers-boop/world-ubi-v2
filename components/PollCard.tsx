@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useCallback } from 'react'
+import { useSession } from 'next-auth/react'
 import { Button } from './ui/Button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/Card'
-import { Verify } from './Verify'
 import { useDictionary } from '@/components/providers/DictionaryProvider'
 
 interface Poll {
@@ -17,56 +17,57 @@ interface Poll {
 
 interface PollCardProps {
     poll: Poll
-    onVote?: (pollId: string, optionIndex: number, nullifierHash: string) => void
+    onVote?: (pollId: string, optionIndex: number) => void
     onError?: (error: Error) => void
 }
 
 export function PollCard({ poll, onVote, onError }: PollCardProps) {
     const [selectedOption, setSelectedOption] = useState<number | null>(null)
-    const [isVoting, setIsVoting] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const [hasVoted, setHasVoted] = useState(false)
     const [voteError, setVoteError] = useState<string | null>(null)
     const dictionary = useDictionary()
+    const { status } = useSession()
 
-    const handleVoteSuccess = useCallback(async (result: { nullifier_hash: string }) => {
+    const handleVote = useCallback(async () => {
         if (selectedOption === null) return
-
-        setIsVoting(true)
         setVoteError(null)
-        
+        setIsSubmitting(true)
+
         try {
-            // Submit vote to API
             const response = await fetch('/api/vote', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
                     pollId: poll.id,
-                    optionIndex: selectedOption,
-                    nullifierHash: result.nullifier_hash
+                    optionIndex: selectedOption
                 })
             })
 
+            const payload = (await response.json().catch(() => null)) as { error?: string } | null
+
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}))
-                throw new Error(errorData.error || `Vote failed with status ${response.status}`)
+                if (response.status === 401) {
+                    setVoteError('Sign in with your wallet to vote.')
+                    return
+                }
+                const message = payload?.error || 'Unable to submit vote.'
+                setVoteError(message)
+                return
             }
 
             setHasVoted(true)
-            onVote?.(poll.id, selectedOption, result.nullifier_hash)
+            onVote?.(poll.id, selectedOption)
         } catch (error) {
-            const err = error instanceof Error ? error : new Error('Failed to submit vote')
-            setVoteError(err.message)
-            onError?.(err)
+            const voteException = error instanceof Error ? error : new Error('Unable to submit vote.')
+            setVoteError(voteException.message)
+            onError?.(voteException)
         } finally {
-            setIsVoting(false)
+            setIsSubmitting(false)
         }
-    }, [selectedOption, poll.id, onVote, onError])
-
-    const handleVerifyError = useCallback((error: unknown) => {
-        const err = error instanceof Error ? error : new Error('Verification failed')
-        setVoteError(err.message)
-        onError?.(err)
-    }, [onError])
+    }, [onError, onVote, poll.id, selectedOption])
 
     const endDate = new Date(poll.endDate)
     const isExpired = endDate < new Date()
@@ -104,22 +105,21 @@ export function PollCard({ poll, onVote, onError }: PollCardProps) {
                     </div>
                 )}
 
+                {status !== 'authenticated' && !isExpired && (
+                    <p className="mt-4 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-xl p-3">
+                        Sign in with your wallet on the home page to enable voting.
+                    </p>
+                )}
+
                 {!hasVoted && !isExpired && (
-                    <Verify
-                        action={`vote_poll_${poll.id}`}
-                        signal={poll.id}
-                        onSuccess={handleVoteSuccess}
-                        onError={handleVerifyError}
+                    <Button
+                        fullWidth
+                        className="mt-4"
+                        disabled={selectedOption === null || isSubmitting || status !== 'authenticated'}
+                        onClick={handleVote}
                     >
-                        <Button
-                            fullWidth
-                            className="mt-4"
-                            disabled={selectedOption === null}
-                            isLoading={isVoting}
-                        >
-                            {dictionary.govern.vote}
-                        </Button>
-                    </Verify>
+                        {isSubmitting ? 'Submitting...' : dictionary.govern.vote}
+                    </Button>
                 )}
 
                 {hasVoted && (

@@ -5,9 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card'
 import { useDictionary } from '@/components/providers/DictionaryProvider'
 import { PiHandHeart, PiUsers, PiCopy, PiCheck } from 'react-icons/pi'
-import { MiniKit } from '@worldcoin/minikit-js'
-import { BASIC_INCOME_CONTRACT } from '@/lib/contracts'
-import { isMiniKitInstalled } from '@/lib/minikit'
+import { PRIMARY_BASE_WALLET } from '@/lib/baseWallet'
 
 interface ContributeTabProps {
     walletAddress: string | null
@@ -20,33 +18,15 @@ export function ContributeTab({ walletAddress }: ContributeTabProps) {
 
     const t = dictionary.earn.tabs.contribute
     const referralLink = walletAddress
-        ? `https://worldubi.coin/ref/${walletAddress.slice(0, 8)}`
-        : 'Connect your wallet to generate a referral link'
+        ? `https://basescan.org/address/${walletAddress}`
+        : 'Base wallet is not available'
 
     const handleDonate = async () => {
-        if (!isMiniKitInstalled()) return
-
         setIsDonating(true)
         try {
-            await MiniKit.commandsAsync.sendTransaction({
-                transaction: [
-                    {
-                        address: BASIC_INCOME_CONTRACT,
-                        abi: [
-                            {
-                                inputs: [],
-                                name: 'donate',
-                                outputs: [],
-                                stateMutability: 'payable',
-                                type: 'function'
-                            }
-                        ],
-                        functionName: 'donate',
-                        args: [],
-                        value: (10 ** 18).toString() // 1 WLD or native token
-                    }
-                ]
-            })
+            await navigator.clipboard.writeText(PRIMARY_BASE_WALLET)
+            setCopied(true)
+            setTimeout(() => setCopied(false), 2000)
         } catch {
         } finally {
             setIsDonating(false)
@@ -79,7 +59,7 @@ export function ContributeTab({ walletAddress }: ContributeTabProps) {
                         fullWidth
                         size="lg"
                     >
-                        {t.donateButton}
+                        {isDonating ? 'Copying...' : 'Copy Base Wallet Address'}
                     </Button>
                 </CardContent>
             </Card>

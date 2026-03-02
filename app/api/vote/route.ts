@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { addVote, getVoteCounts, isNullifierUsed } from '@/lib/db/votes'
+import crypto from 'node:crypto'
+import { getServerSession } from 'next-auth'
+import { addVote, getVoteCounts } from '@/lib/db/votes'
+import { authOptions } from '@/lib/auth'
 import { logger } from '@/lib/logger'
 import { checkRateLimit, getClientIdentifier } from '@/lib/rate-limit'
-
-interface VoteRequest {
-    pollId: string
-    optionIndex: number
-    nullifierHash: string
-}
 
 function createRateLimitResponse(retryAfterSeconds: number, remaining: number, limit: number): NextResponse {
     return NextResponse.json(
@@ -25,11 +22,21 @@ function createRateLimitResponse(retryAfterSeconds: number, remaining: number, l
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
-        const identifier = getClientIdentifier(request)
+        const session = await getServerSession(authOptions)
+        const address = session?.user?.address
+
+        if (!address) {
+            return NextResponse.json(
+                { error: 'Authentication required. Please sign in with your wallet.' },
+                { status: 401 }
+            )
+        }
+
+        const identifier = `${getClientIdentifier(request)}:${address}`
         const rateLimit = await checkRateLimit({
             identifier,
             keyPrefix: 'api:vote:post',
-            maxRequests: 20,
+            maxRequests: 5,
             windowMs: 60_000
         })
 
@@ -37,64 +44,52 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             return createRateLimitResponse(rateLimit.retryAfterSeconds, rateLimit.remaining, rateLimit.limit)
         }
 
-        const body = await request.json() as VoteRequest
-        const { pollId, optionIndex, nullifierHash } = body
+        const body = (await request.json()) as {
+            pollId?: string
+            optionIndex?: number
+        }
+        const pollId = body.pollId?.trim()
+        const optionIndexRaw = body.optionIndex
 
-        // Validate required fields
-        if (!pollId || optionIndex === undefined || !nullifierHash) {
+        if (!pollId || !Number.isInteger(optionIndexRaw)) {
             return NextResponse.json(
-                { error: 'Missing required fields: pollId, optionIndex, and nullifierHash are required' },
+                { error: 'pollId and optionIndex are required' },
                 { status: 400 }
             )
         }
 
-        // Validate optionIndex is a non-negative integer
-        if (typeof optionIndex !== 'number' || optionIndex < 0 || !Number.isInteger(optionIndex)) {
+        const optionIndex = optionIndexRaw as number
+
+        if (optionIndex < 0 || optionIndex > 20) {
             return NextResponse.json(
-                { error: 'optionIndex must be a non-negative integer' },
+                { error: 'Invalid optionIndex value' },
                 { status: 400 }
             )
         }
 
-        // Check if nullifier has already been used (prevents double voting)
-        const alreadyVoted = await isNullifierUsed(pollId, nullifierHash)
-        if (alreadyVoted) {
-            return NextResponse.json(
-                { error: 'You have already voted in this poll' },
-                { status: 409 }
-            )
-        }
+        const voterFingerprint = crypto
+            .createHash('sha256')
+            .update(address.toLowerCase())
+            .digest('hex')
 
-        // Record the vote
-        const result = await addVote(pollId, optionIndex, nullifierHash)
-        
+        const result = await addVote(pollId, optionIndex, voterFingerprint)
         if (!result.success) {
             return NextResponse.json(
-                { error: result.error || 'Failed to record vote' },
+                { error: result.error || 'Unable to register vote' },
                 { status: 409 }
             )
         }
 
-        // Get updated vote counts
         const { totalVotes, voteCounts } = await getVoteCounts(pollId)
 
         return NextResponse.json({
             success: true,
-            message: 'Vote recorded successfully',
             pollId,
             totalVotes,
             voteCounts
         })
-
     } catch (error) {
-        if (error instanceof SyntaxError) {
-            return NextResponse.json(
-                { error: 'Invalid JSON in request body' },
-                { status: 400 }
-            )
-        }
-        
-        logger.error('Vote API error', error)
+        logger.error('Vote POST API error', error)
         return NextResponse.json(
             { error: 'Internal server error' },
             { status: 500 }

@@ -1,7 +1,7 @@
 {
     "name": "World UBI Coin",
     "short_name": "WorldUBI",
-    "description": "Universal Basic Income for Everyone - Earn passive income through World ID verification",
+    "description": "Universal Basic Income on Base with USDC support",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#f8fafc",

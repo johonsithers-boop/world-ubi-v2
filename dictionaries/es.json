@@ -1,6 +1,6 @@
 {
     "common": {
-        "appName": "World UBI Coin",
+        "appName": "Base UBI",
         "loading": "Cargando...",
         "error": "Ocurrió un error",
         "retry": "Intentar de nuevo",
@@ -16,14 +16,14 @@
         "menu": "Menú"
     },
     "home": {
-        "title": "World UBI Coin",
+        "title": "Base UBI",
         "subtitle": "Ingreso Básico Universal para Todos",
-        "description": "Gana ingresos pasivos, participa en la gobernanza y contribuye a una economía global a través de la verificación de World ID.",
-        "connectButton": "Conectar con World ID",
+        "description": "Consulta balances, participa en gobernanza y contribuye a una economía global de IBU sobre Base.",
+        "connectButton": "Continuar",
         "features": {
             "basicIncome": {
                 "title": "Ingreso Básico",
-                "description": "Recibe pagos regulares de IBU verificados a través de World ID"
+                "description": "Recibe pagos regulares de IBU registrados on-chain"
             },
             "governance": {
                 "title": "Gobernanza",
@@ -41,7 +41,7 @@
             "basicIncome": {
                 "tabTitle": "Ingreso Básico",
                 "title": "Ingreso Básico Universal",
-                "subtitle": "Gana ingresos pasivos a través de la verificación de World ID",
+                "subtitle": "Gana ingresos pasivos con contabilidad on-chain",
                 "setupSubtitle": "Configura tu flujo de IBU para empezar a ganar",
                 "activateButton": "Activar IBU",
                 "activating": "Activando...",
@@ -75,7 +75,7 @@
     },
     "govern": {
         "title": "Gobernanza",
-        "subtitle": "Vota propuestas con tu identidad verificada",
+        "subtitle": "Vota propuestas con tu identidad de wallet",
         "activePolls": "Encuestas Activas",
         "pastPolls": "Encuestas Pasadas",
         "noPolls": "No hay encuestas activas en este momento",
@@ -97,12 +97,12 @@
         "title": "Preguntas Frecuentes",
         "questions": [
             {
-                "q": "¿Qué es World UBI Coin?",
-                "a": "World UBI Coin es una plataforma de Ingreso Básico Universal que distribuye pagos regulares a titulares verificados de World ID."
+                "q": "¿Qué es Base UBI?",
+                "a": "Base UBI es una plataforma de Ingreso Básico Universal enfocada en usuarios de Base y flujos denominados en USDC."
             },
             {
                 "q": "¿Cómo empiezo a recibir IBU?",
-                "a": "Conecta tu cartera de World ID y activa tu flujo de IBU en la página Ganar."
+                "a": "Abre la página Ganar y activa tu flujo de IBU con tu wallet de Base configurada."
             },
             {
                 "q": "¿Con qué frecuencia puedo reclamar?",

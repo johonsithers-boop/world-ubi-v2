@@ -8,6 +8,7 @@ import { useBasicIncome } from '@/hooks/useBasicIncome'
 import { useDictionary } from '@/components/providers/DictionaryProvider'
 import { formatBalance } from '@/lib/utils'
 import { PiCoins } from 'react-icons/pi'
+import { PRIMARY_TOKEN_SYMBOL } from '@/lib/baseWallet'
 
 interface BasicIncomeTabProps {
     walletAddress: string | null
@@ -27,6 +28,7 @@ export function BasicIncomeTab({ walletAddress, onSuccess }: BasicIncomeTabProps
 
     const [timeLeft, setTimeLeft] = useState<string>('')
     const [canClaim, setCanClaim] = useState(false)
+    const readOnlyMode = true
 
     useEffect(() => {
         const calculateTimeLeft = () => {
@@ -68,17 +70,23 @@ export function BasicIncomeTab({ walletAddress, onSuccess }: BasicIncomeTabProps
                         <CardDescription className="text-base">{t.setupSubtitle}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Button
-                            onClick={setupBasicIncome}
-                            isLoading={isClaiming}
-                            fullWidth
-                            size="lg"
-                        >
-                            {isClaiming ? t.activating : t.activateButton}
-                        </Button>
-                    </CardContent>
-                </Card>
-            </div>
+                    <Button
+                        onClick={setupBasicIncome}
+                        isLoading={isClaiming}
+                        disabled={readOnlyMode}
+                        fullWidth
+                        size="lg"
+                    >
+                        {readOnlyMode ? 'Coming Soon' : isClaiming ? t.activating : t.activateButton}
+                    </Button>
+                    {readOnlyMode ? (
+                        <p className="mt-3 text-center text-xs text-gray-500">
+                            Read-only mode: activation transactions are temporarily disabled.
+                        </p>
+                    ) : null}
+                </CardContent>
+            </Card>
+        </div>
         )
     }
 
@@ -96,7 +104,7 @@ export function BasicIncomeTab({ walletAddress, onSuccess }: BasicIncomeTabProps
                     <p className="text-5xl font-bold text-gray-900 mb-2">
                         {formatBalance(claimableAmount)}
                     </p>
-                    <p className="text-gray-500 mb-6">WLD</p>
+                    <p className="text-gray-500 mb-6">{PRIMARY_TOKEN_SYMBOL}</p>
 
                     {timeLeft ? (
                         <div
@@ -112,14 +120,19 @@ export function BasicIncomeTab({ walletAddress, onSuccess }: BasicIncomeTabProps
                     <Button
                         onClick={claimBasicIncome}
                         isLoading={isClaiming}
-                        disabled={!canClaim || isClaiming}
+                        disabled={readOnlyMode || !canClaim || isClaiming}
                         fullWidth
                         size="lg"
                         className={!canClaim ? 'bg-gray-200 text-gray-400' : ''}
                         aria-label={isClaiming ? t.claiming : timeLeft ? `On Cooldown: ${timeLeft}` : t.claimButton}
                     >
-                        {isClaiming ? t.claiming : timeLeft ? 'On Cooldown' : t.claimButton}
+                        {readOnlyMode ? 'Coming Soon' : isClaiming ? t.claiming : timeLeft ? 'On Cooldown' : t.claimButton}
                     </Button>
+                    {readOnlyMode ? (
+                        <p className="mt-3 text-center text-xs text-gray-500">
+                            Read-only mode: claim transactions are temporarily disabled.
+                        </p>
+                    ) : null}
                 </CardContent>
             </Card>
         </div>

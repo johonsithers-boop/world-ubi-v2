@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import '@/lib/env.server'
-import { MiniKitProvider } from '@/components/providers/MiniKitProvider'
 import { MobileDebugger } from '@/components/MobileDebugger'
 
 export const metadata: Metadata = {
-  title: 'World UBI Coin',
-  description: 'Universal Basic Income for Everyone - Earn passive income through World ID verification',
+  title: 'Base UBI',
+  description: 'Universal Basic Income app on Base with USDC support.',
   manifest: '/manifest.json',
   icons: {
     icon: '/favicon.ico'
@@ -27,9 +26,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <MiniKitProvider>
+    <>
       <MobileDebugger />
       {children}
-    </MiniKitProvider>
+    </>
   )
 }

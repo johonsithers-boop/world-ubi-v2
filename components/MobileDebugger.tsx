@@ -12,11 +12,10 @@ export function MobileDebugger() {
         // Only load in development
         if (process.env.NODE_ENV !== 'development') return
 
-        // Check if we're on a mobile device or in World App
+        // Check if we're on a mobile device
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-        const isWorldApp = typeof window !== 'undefined' && 'MiniKit' in window
 
-        if (isMobile || isWorldApp) {
+        if (isMobile) {
             // Dynamically load Eruda
             const script = document.createElement('script')
             script.src = 'https://cdn.jsdelivr.net/npm/eruda'

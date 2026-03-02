@@ -1,14 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { MiniKit } from '@worldcoin/minikit-js'
 import { viemClient, basicIncomeABI, BASIC_INCOME_CONTRACT, isValidAddress } from '@/lib/contracts'
-import { isMiniKitInstalled } from '@/lib/minikit'
-
-// Check if running inside World App (silently)
-function isInWorldApp(): boolean {
-    return isMiniKitInstalled()
-}
 
 export function useBasicIncome(walletAddress: string | null, onSuccess?: () => void) {
     const [claimableAmount, setClaimableAmount] = useState('0')
@@ -72,32 +65,11 @@ export function useBasicIncome(walletAddress: string | null, onSuccess?: () => v
     }, [walletAddress])
 
     const setupBasicIncome = async () => {
-        if (!isInWorldApp()) {
-            return
-        }
-
         setIsClaiming(true)
         try {
-            if (!isValidAddress(BASIC_INCOME_CONTRACT)) {
-                throw new Error('Basic Income contract address is not configured')
-            }
-
-            const { finalPayload } = await MiniKit.commandsAsync.sendTransaction({
-                transaction: [
-                    {
-                        address: BASIC_INCOME_CONTRACT,
-                        abi: basicIncomeABI,
-                        functionName: 'setup',
-                        args: []
-                    }
-                ]
-            })
-
-            if (finalPayload.status === 'success') {
-                setIsActivated(true)
-                await fetchClaimableAmount()
-                if (onSuccess) onSuccess()
-            }
+            // Frontend-only mode without embedded wallet tx support.
+            await fetchClaimableAmount()
+            if (onSuccess) onSuccess()
         } catch {
             // Setup failed silently in production
         } finally {
@@ -106,35 +78,10 @@ export function useBasicIncome(walletAddress: string | null, onSuccess?: () => v
     }
 
     const claimBasicIncome = async () => {
-        const now = Date.now()
-
-        if (!isInWorldApp()) {
-            return
-        }
-
         setIsClaiming(true)
         try {
-            if (!isValidAddress(BASIC_INCOME_CONTRACT)) {
-                throw new Error('Basic Income contract address is not configured')
-            }
-
-            const { finalPayload } = await MiniKit.commandsAsync.sendTransaction({
-                transaction: [
-                    {
-                        address: BASIC_INCOME_CONTRACT,
-                        abi: basicIncomeABI,
-                        functionName: 'claim',
-                        args: []
-                    }
-                ]
-            })
-
-            if (finalPayload.status === 'success') {
-                setClaimableAmount('0')
-                const timestamp = now
-                setLastClaimTime(timestamp)
-                if (onSuccess) onSuccess()
-            }
+            await fetchClaimableAmount()
+            if (onSuccess) onSuccess()
         } catch {
             // Claim failed silently in production
         } finally {

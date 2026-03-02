@@ -7,6 +7,7 @@ import { useDictionary } from '@/components/providers/DictionaryProvider'
 import { useStaking } from '@/hooks/useStaking'
 import { formatBalance } from '@/lib/utils'
 import { PiVault, PiTrendUp } from 'react-icons/pi'
+import { PRIMARY_TOKEN_SYMBOL } from '@/lib/baseWallet'
 
 interface SavingsTabProps {
     walletAddress: string | null
@@ -25,6 +26,7 @@ export function SavingsTab({ walletAddress, onSuccess }: SavingsTabProps) {
     } = useStaking(walletAddress, onSuccess)
 
     const t = dictionary.earn.tabs.savings
+    const readOnlyMode = true
 
     const handleStake = () => stake('10')
     const handleUnstake = () => unstake('10')
@@ -45,12 +47,12 @@ export function SavingsTab({ walletAddress, onSuccess }: SavingsTabProps) {
                         <div className="text-center p-4 bg-white rounded-xl">
                             <p className="text-sm text-gray-500">{t.stakedBalance}</p>
                             <p className="text-2xl font-bold text-gray-900">{formatBalance(stakedBalance)}</p>
-                            <p className="text-xs text-gray-400">WLD</p>
+                            <p className="text-xs text-gray-400">{PRIMARY_TOKEN_SYMBOL}</p>
                         </div>
                         <div className="text-center p-4 bg-white rounded-xl">
                             <p className="text-sm text-gray-500">{t.availableRewards}</p>
                             <p className="text-2xl font-bold text-green-600">{formatBalance(availableRewards)}</p>
-                            <p className="text-xs text-gray-400">WLD</p>
+                            <p className="text-xs text-gray-400">{PRIMARY_TOKEN_SYMBOL}</p>
                         </div>
                     </div>
 
@@ -64,32 +66,40 @@ export function SavingsTab({ walletAddress, onSuccess }: SavingsTabProps) {
                         <Button
                             onClick={handleStake}
                             isLoading={isStaking}
+                            disabled={readOnlyMode}
                             fullWidth
                             size="lg"
-                            aria-label={`Stake 10 WLD tokens at ${t.apy}`}
+                            aria-label={`Stake 10 ${PRIMARY_TOKEN_SYMBOL} tokens at ${t.apy}`}
                         >
-                            {t.stakeButton}
+                            {readOnlyMode ? 'Coming Soon' : t.stakeButton}
                         </Button>
                         <div className="grid grid-cols-2 gap-3">
                             <Button
                                 variant="outline"
                                 onClick={handleUnstake}
                                 isLoading={isStaking}
+                                disabled={readOnlyMode}
                                 fullWidth
-                                aria-label="Unstake 10 WLD tokens"
+                                aria-label={`Unstake 10 ${PRIMARY_TOKEN_SYMBOL} tokens`}
                             >
-                                {t.unstakeButton}
+                                {readOnlyMode ? 'Coming Soon' : t.unstakeButton}
                             </Button>
                             <Button
                                 variant="outline"
                                 onClick={handleClaim}
                                 isLoading={isStaking}
+                                disabled={readOnlyMode}
                                 fullWidth
                                 aria-label="Claim staking rewards"
                             >
-                                {t.claimRewards}
+                                {readOnlyMode ? 'Coming Soon' : t.claimRewards}
                             </Button>
                         </div>
+                        {readOnlyMode ? (
+                            <p className="text-center text-xs text-gray-500">
+                                Read-only mode: staking transactions are temporarily disabled.
+                            </p>
+                        ) : null}
                     </div>
                 </CardContent>
             </Card>

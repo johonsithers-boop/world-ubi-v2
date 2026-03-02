@@ -11,8 +11,8 @@ const demoPolls = [
     {
         id: '1',
         title: 'Increase UBI Distribution Rate',
-        description: 'Should we increase the daily UBI distribution from 0.1 WLD to 0.15 WLD?',
-        options: ['Yes, increase to 0.15 WLD', 'No, keep at 0.1 WLD', 'Increase to 0.12 WLD'],
+        description: 'Should we increase the daily UBI distribution from 0.1 USDC to 0.15 USDC?',
+        options: ['Yes, increase to 0.15 USDC', 'No, keep at 0.1 USDC', 'Increase to 0.12 USDC'],
         endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
         totalVotes: 12453
     },

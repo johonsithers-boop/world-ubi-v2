@@ -9,13 +9,10 @@
     "build:turbopack": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:minikit": "bash scripts/test-minikit.sh",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.8.0",
-    "@worldcoin/minikit-js": "^1.9.9",
-    "@worldcoin/minikit-react": "^1.9.10",
     "clsx": "^2.1.1",
     "framer-motion": "^12.28.1",
     "negotiator": "^1.0.0",

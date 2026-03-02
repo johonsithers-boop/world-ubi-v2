@@ -8,7 +8,7 @@ async function main() {
   // --- Configuration ---
   const dailyAmount = process.env.UBI_DAILY_AMOUNT || ethers.parseEther('0.25').toString()
   const rewardRateBps = Number(process.env.STAKING_REWARD_RATE || '500') // 5%
-  const reserveWalletInput = process.env.RESERVE_WALLET || '0x91257866118213d1caf2d13d9280e46e724c41fe'
+  const reserveWalletInput = process.env.RESERVE_WALLET || '0x6c9C265878Fc71fAad4C41863819c61Ae2a805a1'
   if (!ethers.isAddress(reserveWalletInput)) {
     throw new Error(`Invalid RESERVE_WALLET address: ${reserveWalletInput}`)
   }

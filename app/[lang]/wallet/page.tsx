@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardDescription } from '@/components/ui/
 import { Button } from '@/components/ui/Button'
 import { PiWallet, PiArrowLeft, PiArrowUpRight, PiArrowDownLeft, PiRepeat, PiVault, PiChartLineUp } from 'react-icons/pi'
 import { PageProps, CommonParams } from '@/lib/types'
+import { PRIMARY_TOKEN_SYMBOL } from '@/lib/baseWallet'
 
 export default function WalletPage({
     params
@@ -62,7 +63,7 @@ export default function WalletPage({
                         </CardDescription>
                         <div className="flex items-baseline gap-2">
                             <span className="text-4xl font-black">{totalBalance}</span>
-                            <span className="text-xl font-medium opacity-80">WLD</span>
+                            <span className="text-xl font-medium opacity-80">{PRIMARY_TOKEN_SYMBOL}</span>
                         </div>
                     </CardHeader>
                     <CardContent>
@@ -98,7 +99,7 @@ export default function WalletPage({
                     <h2 className="text-sm font-bold text-gray-500 uppercase tracking-widest px-1">Breakdown</h2>
 
                     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm divide-y divide-gray-50">
-                        {/* WLD Balance */}
+                        {/* Available Balance */}
                         <div className="flex items-center justify-between p-4">
                             <div className="flex items-center gap-3">
                                 <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
@@ -106,12 +107,12 @@ export default function WalletPage({
                                 </div>
                                 <div>
                                     <p className="font-bold text-gray-900">Available</p>
-                                    <p className="text-xs text-gray-500">Spendable WLD</p>
+                                    <p className="text-xs text-gray-500">Spendable {PRIMARY_TOKEN_SYMBOL}</p>
                                 </div>
                             </div>
                             <div className="text-right">
-                                <p className="font-bold text-gray-900">{formatBalance(tokenBalance)} WLD</p>
-                                <p className="text-xs text-gray-400">~ ${(parseFloat(tokenBalance) * 2.5).toFixed(2)}</p>
+                                <p className="font-bold text-gray-900">{formatBalance(tokenBalance)} {PRIMARY_TOKEN_SYMBOL}</p>
+                                <p className="text-xs text-gray-400">~ ${(parseFloat(tokenBalance) * 1).toFixed(2)}</p>
                             </div>
                         </div>
 
@@ -127,7 +128,7 @@ export default function WalletPage({
                                 </div>
                             </div>
                             <div className="text-right">
-                                <p className="font-bold text-gray-900">{formatBalance(stakedBalance)} WLD</p>
+                                <p className="font-bold text-gray-900">{formatBalance(stakedBalance)} {PRIMARY_TOKEN_SYMBOL}</p>
                             </div>
                         </div>
 
@@ -143,7 +144,7 @@ export default function WalletPage({
                                 </div>
                             </div>
                             <div className="text-right">
-                                <p className="font-bold text-gray-900">{formatBalance(availableRewards)} WLD</p>
+                                <p className="font-bold text-gray-900">{formatBalance(availableRewards)} {PRIMARY_TOKEN_SYMBOL}</p>
                             </div>
                         </div>
 
@@ -159,7 +160,7 @@ export default function WalletPage({
                                 </div>
                             </div>
                             <div className="text-right">
-                                <p className="font-bold text-gray-900">{formatBalance(claimableAmount)} WLD</p>
+                                <p className="font-bold text-gray-900">{formatBalance(claimableAmount)} {PRIMARY_TOKEN_SYMBOL}</p>
                             </div>
                         </div>
                     </div>

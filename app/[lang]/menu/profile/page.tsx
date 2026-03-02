@@ -39,7 +39,7 @@ export default function ProfilePage({
                     <div className="mx-auto h-24 w-24 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-lg mb-4">
                         <PiUser className="h-12 w-12 text-white" />
                     </div>
-                    <h2 className="text-2xl font-bold text-gray-900">World ID User</h2>
+                    <h2 className="text-2xl font-bold text-gray-900">Base Wallet User</h2>
                     <p className="text-gray-500 font-mono text-sm">
                         {walletAddress ? formatAddress(walletAddress) : 'Not Connected'}
                     </p>
@@ -54,12 +54,12 @@ export default function ProfilePage({
                         <div className="flex items-center justify-between py-2">
                             <div className="flex items-center gap-3">
                                 <PiIdentificationCard className="h-5 w-5 text-gray-400" />
-                                <span className="text-gray-600">Verification Level</span>
+                                <span className="text-gray-600">Wallet Status</span>
                             </div>
                             <div className="flex items-center gap-2 px-3 py-1 bg-green-50 rounded-full border border-green-100">
                                 <PiCheckCircleFill className="h-4 w-4 text-green-600" />
                                 <span className="text-sm font-bold text-green-700 capitalize">
-                                    Orb Verified
+                                    Active
                                 </span>
                             </div>
                         </div>
@@ -70,7 +70,7 @@ export default function ProfilePage({
                                 <span className="text-gray-600">Platform</span>
                             </div>
                             <span className="text-sm font-medium text-gray-900 uppercase">
-                                World App
+                                Base
                             </span>
                         </div>
                     </CardContent>

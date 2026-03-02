@@ -1,15 +1,10 @@
 'use client'
 
-import { MiniKit } from '@worldcoin/minikit-js'
 import { useState } from 'react'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { createWalletAuthMessage } from '@/lib/auth-message'
 import { useDictionary } from '@/components/providers/DictionaryProvider'
-import { isMiniKitInstalled } from '@/lib/minikit'
-
-// Check if running inside World App (silently)
-function isInWorldApp(): boolean {
-    return isMiniKitInstalled()
-}
 
 interface WalletAuthProps {
     lang: string
@@ -23,34 +18,94 @@ export function WalletAuth({ lang, onError, onSuccess }: WalletAuthProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
 
+    interface EthereumProvider {
+        request: (args: { method: string; params?: unknown[] }) => Promise<unknown>
+    }
+
+    interface AuthNonceResponse {
+        nonce: string
+        nonceToken: string
+    }
+
+    function getEthereumProvider(): EthereumProvider | null {
+        if (typeof window === 'undefined') return null
+        const provider = (window as Window & { ethereum?: EthereumProvider }).ethereum
+        return provider ?? null
+    }
+
+    async function signWalletMessage(provider: EthereumProvider, message: string, address: string): Promise<string> {
+        try {
+            return (await provider.request({
+                method: 'personal_sign',
+                params: [message, address]
+            })) as string
+        } catch {
+            return (await provider.request({
+                method: 'personal_sign',
+                params: [address, message]
+            })) as string
+        }
+    }
+
     const handleAuth = async () => {
         setIsLoading(true)
         setError(null)
 
-        if (!isInWorldApp()) {
-            const worldAppError = 'Please open this app inside World App to continue.'
-            setError(worldAppError)
-            if (onError) onError(worldAppError)
-            setIsLoading(false)
-            return
-        }
-
         try {
-            const { finalPayload } = await MiniKit.commandsAsync.walletAuth({
-                nonce: crypto.randomUUID(),
-                statement: 'Sign in to World UBI Coin'
+            const provider = getEthereumProvider()
+            if (!provider) {
+                throw new Error('No wallet detected. Install Base Wallet or another EVM wallet.')
+            }
+
+            const accounts = (await provider.request({
+                method: 'eth_requestAccounts'
+            })) as string[]
+
+            const address = accounts?.[0]
+            if (!address) {
+                throw new Error('Wallet did not return an account.')
+            }
+
+            const nonceResponse = await fetch('/api/auth/nonce', {
+                method: 'GET',
+                cache: 'no-store'
             })
 
-            if (finalPayload.status === 'success') {
-                if (onSuccess) onSuccess()
-                router.push(`/${lang}/earn`)
-            } else {
-                const cancelledError = 'Authentication cancelled'
-                setError(cancelledError)
-                if (onError) onError(cancelledError)
+            if (!nonceResponse.ok) {
+                throw new Error('Unable to get login challenge.')
             }
-        } catch {
-            const authError = 'Failed to authenticate with World App.'
+
+            const { nonce, nonceToken } = (await nonceResponse.json()) as AuthNonceResponse
+            if (!nonce || !nonceToken) {
+                throw new Error('Invalid login challenge.')
+            }
+
+            const message = createWalletAuthMessage({
+                address,
+                nonce,
+                uri: window.location.origin,
+                issuedAt: new Date().toISOString()
+            })
+
+            const signature = await signWalletMessage(provider, message, address)
+
+            const result = await signIn('base-wallet', {
+                redirect: false,
+                address,
+                message,
+                signature,
+                nonce,
+                nonceToken
+            })
+
+            if (!result || result.error) {
+                throw new Error('Wallet authentication failed.')
+            }
+
+            if (onSuccess) onSuccess()
+            router.push(`/${lang}/earn`)
+        } catch (err) {
+            const authError = err instanceof Error ? err.message : 'Failed to continue.'
             setError(authError)
             if (onError) onError(authError)
         } finally {

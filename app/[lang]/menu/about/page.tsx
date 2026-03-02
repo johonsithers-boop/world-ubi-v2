@@ -34,10 +34,10 @@ export default function AboutPage({
                 {/* App Brand */}
                 <div className="text-center py-8">
                     <div className="mx-auto h-20 w-20 rounded-3xl bg-green-600 flex items-center justify-center shadow-xl mb-4 rotate-3">
-                        <span className="text-white text-4xl font-black">W</span>
+                        <span className="text-white text-4xl font-black">B</span>
                     </div>
-                    <h2 className="text-2xl font-black text-gray-900 tracking-tight">World UBI Coin</h2>
-                    <p className="text-gray-500 font-medium">Version 1.2.0 (World Chain)</p>
+                    <h2 className="text-2xl font-black text-gray-900 tracking-tight">Base UBI</h2>
+                    <p className="text-gray-500 font-medium">Version 2.0.0 (Base)</p>
                 </div>
 
                 {/* Missions */}
@@ -45,22 +45,22 @@ export default function AboutPage({
                     <CardHeader>
                         <CardTitle className="text-lg">Our Mission</CardTitle>
                         <CardDescription>
-                            Providing universal basic income and staking rewards to every verified human on the planet.
+                            Providing transparent UBI and community finance tools on Base using stable assets.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="flex gap-4 p-3 bg-gray-50 rounded-xl">
                             <PiGlobe className="h-6 w-6 text-green-600 flex-shrink-0" />
                             <div>
-                                <p className="font-bold text-gray-900">Decentralized Income</p>
-                                <p className="text-sm text-gray-500">Automated UBI distribution via World Chain smart contracts.</p>
+                                <p className="font-bold text-gray-900">Base-Native Infrastructure</p>
+                                <p className="text-sm text-gray-500">UBI and treasury flows connected to Base network tooling.</p>
                             </div>
                         </div>
                         <div className="flex gap-4 p-3 bg-gray-50 rounded-xl">
                             <PiShieldCheck className="h-6 w-6 text-blue-600 flex-shrink-0" />
                             <div>
-                                <p className="font-bold text-gray-900">Proof of Personhood</p>
-                                <p className="text-sm text-gray-500">Secured by World ID to ensure one UBI per real human.</p>
+                                <p className="font-bold text-gray-900">Stable Asset Focus</p>
+                                <p className="text-sm text-gray-500">Primary treasury wallet and operations in Base USDC.</p>
                             </div>
                         </div>
                     </CardContent>
@@ -79,8 +79,8 @@ export default function AboutPage({
                 </div>
 
                 <div className="text-center pt-8">
-                    <p className="text-xs text-gray-400">© 2026 World UBI Coin Foundation</p>
-                    <p className="text-xs text-gray-400 mt-1">Built for the Worldcoin Ecosystem</p>
+                    <p className="text-xs text-gray-400">© 2026 Base UBI</p>
+                    <p className="text-xs text-gray-400 mt-1">Built on Base ecosystem</p>
                 </div>
             </div>
         </div>

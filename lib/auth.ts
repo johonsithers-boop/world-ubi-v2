@@ -1,10 +1,14 @@
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { getAddress, isAddress, verifyMessage } from 'viem'
+import { extractAddressAndNonceFromMessage } from '@/lib/auth-message'
 import { logger } from '@/lib/logger'
+import { consumeNonceChallenge } from '@/lib/nonce'
 import { serverEnv } from '@/lib/env.server'
 
 declare module 'next-auth' {
     interface User {
+        id: string
         address?: string
     }
     interface Session {
@@ -25,26 +29,64 @@ export const authOptions: NextAuthOptions = {
     secret: serverEnv.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
-            id: 'world-id',
-            name: 'World ID',
+            id: 'base-wallet',
+            name: 'Base Wallet',
             credentials: {
-                token: { label: 'Token', type: 'text' },
-                address: { label: 'Address', type: 'text' }
+                address: { label: 'Address', type: 'text' },
+                message: { label: 'Message', type: 'text' },
+                signature: { label: 'Signature', type: 'text' },
+                nonce: { label: 'Nonce', type: 'text' },
+                nonceToken: { label: 'Nonce Token', type: 'text' }
             },
             async authorize(credentials) {
-                if (!credentials?.token) return null
-
                 try {
-                    // In production, verify the World ID token with the API
-                    // const response = await fetch('https://developer.worldcoin.org/api/v1/verify', ...)
+                    const address = credentials?.address?.trim() || ''
+                    const message = credentials?.message?.trim() || ''
+                    const signature = credentials?.signature?.trim() || ''
+                    const nonce = credentials?.nonce?.trim() || ''
+                    const nonceToken = credentials?.nonceToken?.trim() || ''
 
-                    // For demo purposes, we accept the token directly
+                    if (!address || !message || !signature || !nonce || !nonceToken) {
+                        return null
+                    }
+
+                    if (!isAddress(address)) {
+                        return null
+                    }
+
+                    const parsed = extractAddressAndNonceFromMessage(message)
+                    if (!parsed) {
+                        return null
+                    }
+
+                    const checksumAddress = getAddress(address)
+                    const normalizedAddress = checksumAddress.toLowerCase()
+                    const parsedAddress = getAddress(parsed.address).toLowerCase()
+
+                    if (parsedAddress !== normalizedAddress || parsed.nonce !== nonce) {
+                        return null
+                    }
+
+                    if (!consumeNonceChallenge(nonce, nonceToken)) {
+                        return null
+                    }
+
+                    const isValidSignature = await verifyMessage({
+                        address: checksumAddress,
+                        message,
+                        signature: signature as `0x${string}`
+                    })
+
+                    if (!isValidSignature) {
+                        return null
+                    }
+
                     return {
-                        id: credentials.token,
-                        address: credentials.address || undefined
+                        id: normalizedAddress,
+                        address: normalizedAddress
                     }
                 } catch (error) {
-                    logger.error('Auth error', error)
+                    logger.warn('Wallet signature authentication failed', error)
                     return null
                 }
             }

@@ -1,37 +1,37 @@
 import { createPublicClient, http, defineChain } from 'viem'
 
-export const worldChain = defineChain({
-    id: 480,
-    name: 'World Chain',
+export const baseChain = defineChain({
+    id: 8453,
+    name: 'Base',
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     rpcUrls: {
-        default: { http: ['https://worldchain-mainnet.g.alchemy.com/public'] },
+        default: { http: ['https://mainnet.base.org'] },
     },
     blockExplorers: {
-        default: { name: 'Worldscan', url: 'https://worldscan.org' },
+        default: { name: 'Basescan', url: 'https://basescan.org' },
     },
 })
 
-export const worldChainSepolia = defineChain({
-    id: 4801,
-    name: 'World Chain Sepolia',
+export const baseChainSepolia = defineChain({
+    id: 84532,
+    name: 'Base Sepolia',
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     rpcUrls: {
-        default: { http: ['https://worldchain-sepolia.g.alchemy.com/public'] },
+        default: { http: ['https://sepolia.base.org'] },
     },
     blockExplorers: {
-        default: { name: 'Worldscan Sepolia', url: 'https://worldchain-sepolia.explorer.alchemy.com' },
+        default: { name: 'Basescan Sepolia', url: 'https://sepolia.basescan.org' },
     },
 })
 
-const chain = process.env.NEXT_PUBLIC_CHAIN === 'sepolia' ? worldChainSepolia : worldChain
+const chain = process.env.NEXT_PUBLIC_CHAIN === 'sepolia' ? baseChainSepolia : baseChain
 
 export const viemClient = createPublicClient({
     chain,
     transport: http()
 })
 
-// WorldUBIToken ABI — generated from contracts/artifacts
+// UBI token ABI
 export const basicIncomeABI = [
     {
         inputs: [{ name: 'account', type: 'address' }],
@@ -98,7 +98,7 @@ export const basicIncomeABI = [
     }
 ] as const
 
-// WorldUBIStaking ABI — generated from contracts/artifacts
+// UBI staking ABI
 export const stakingABI = [
     {
         inputs: [{ name: 'account', type: 'address' }],
@@ -184,7 +184,7 @@ export const getChainConfig = () => {
     const chainEnv = process.env.NEXT_PUBLIC_CHAIN
     const isMainnet = chainEnv === 'mainnet'
     return {
-        chain: isMainnet ? worldChain : worldChainSepolia,
+        chain: isMainnet ? baseChain : baseChainSepolia,
         isMainnet,
         isTestnet: !isMainnet,
         isContractsConfigured: areContractsConfigured()

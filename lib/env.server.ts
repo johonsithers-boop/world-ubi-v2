@@ -11,13 +11,11 @@ export interface ServerEnv {
     DATABASE_PATH: string
     NEXTAUTH_SECRET: string
     NEXTAUTH_URL: string
-    NEXT_PUBLIC_APP_ID: string
     NEXT_PUBLIC_BASIC_INCOME_CONTRACT: string
     NEXT_PUBLIC_CHAIN: 'mainnet' | 'sepolia'
     NEXT_PUBLIC_STAKING_CONTRACT: string
     UPSTASH_REDIS_REST_TOKEN?: string
     UPSTASH_REDIS_REST_URL?: string
-    WLD_CLIENT_ID: string
 }
 
 function readRequiredEnv(name: string): string {
@@ -82,13 +80,11 @@ function buildServerEnv(): ServerEnv {
         DATABASE_PATH: readRequiredEnv('DATABASE_PATH'),
         NEXTAUTH_SECRET: readRequiredEnv('NEXTAUTH_SECRET'),
         NEXTAUTH_URL: readRequiredEnv('NEXTAUTH_URL'),
-        NEXT_PUBLIC_APP_ID: readRequiredEnv('NEXT_PUBLIC_APP_ID'),
         NEXT_PUBLIC_BASIC_INCOME_CONTRACT: readRequiredEnv('NEXT_PUBLIC_BASIC_INCOME_CONTRACT'),
         NEXT_PUBLIC_CHAIN: chain,
         NEXT_PUBLIC_STAKING_CONTRACT: readRequiredEnv('NEXT_PUBLIC_STAKING_CONTRACT'),
         UPSTASH_REDIS_REST_TOKEN: upstashToken,
-        UPSTASH_REDIS_REST_URL: upstashUrl,
-        WLD_CLIENT_ID: readRequiredEnv('WLD_CLIENT_ID')
+        UPSTASH_REDIS_REST_URL: upstashUrl
     }
 
     validateUrl(env.NEXTAUTH_URL, 'NEXTAUTH_URL')

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const configDir = path.dirname(fileURLToPath(import.meta.url));
 
 const securityHeaders = [
-  // Prevent clickjacking — allow embedding only inside World App
+  // Prevent clickjacking
   {
     key: 'X-Frame-Options',
     value: 'SAMEORIGIN',
@@ -35,15 +35,15 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      // Scripts: self + inline (Next.js requires it) + eval (dev HMR) + World App SDK
+      // Scripts: self + inline (Next.js requires it) + eval (dev HMR)
       process.env.NODE_ENV === 'development'
         ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net"
         : "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https:",
       "font-src 'self' data:",
-      "connect-src 'self' https://*.worldcoin.org https://*.world.org wss://*.world.org https://*.walletconnect.com https://rpc.worldchain.io https://rpc.sepolia.worldchain.io",
-      "frame-ancestors 'self' https://*.worldcoin.org https://*.world.org",
+      "connect-src 'self' https://*.walletconnect.com https://mainnet.base.org https://sepolia.base.org",
+      "frame-ancestors 'self'",
       "base-uri 'self'",
       "form-action 'self'",
     ].join('; '),

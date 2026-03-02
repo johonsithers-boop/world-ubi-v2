@@ -1,5 +1,5 @@
 /**
- * Structured logger for World UBI Coin
+ * Structured logger for Base UBI
  * - Development: logs to console with timestamps
  * - Production: logs errors (integrate with Sentry/Datadog here)
  */
