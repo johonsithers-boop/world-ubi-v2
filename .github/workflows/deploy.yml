@@ -1,22 +1,22 @@
-name: Deploy to GitHub Pages
+name: CI Build
 
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: 0123456789abcdef0123456789abcdef0123456789abcde
+      NEXT_PUBLIC_CHAIN: sepolia
+      NEXT_PUBLIC_BASIC_INCOME_CONTRACT: 0x0000000000000000000000000000000000000001
+      NEXT_PUBLIC_STAKING_CONTRACT: 0x0000000000000000000000000000000000000002
+      DATABASE_PATH: /tmp/votes.db
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,21 +33,5 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Type check
+        run: npm run typecheck
