@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import '@/lib/env.server'
 import { MobileDebugger } from '@/components/MobileDebugger'
 
 export const metadata: Metadata = {

@@ -1,6 +1,5 @@
 import 'server-only'
 
-const supportedChains = new Set(['mainnet', 'sepolia'])
 const knownWeakSecrets = new Set([
     '7f52f829871542f7902d87e5621487e5',
     'your_random_secret_key_here',
@@ -11,9 +10,6 @@ export interface ServerEnv {
     DATABASE_PATH: string
     NEXTAUTH_SECRET: string
     NEXTAUTH_URL: string
-    NEXT_PUBLIC_BASIC_INCOME_CONTRACT: string
-    NEXT_PUBLIC_CHAIN: 'mainnet' | 'sepolia'
-    NEXT_PUBLIC_STAKING_CONTRACT: string
     UPSTASH_REDIS_REST_TOKEN?: string
     UPSTASH_REDIS_REST_URL?: string
 }
@@ -43,13 +39,6 @@ function validateUrl(urlValue: string, envName: string): void {
     }
 }
 
-function validateAddress(address: string, envName: string): void {
-    const isAddress = /^0x[a-fA-F0-9]{40}$/.test(address)
-    if (!isAddress) {
-        throw new Error(`Invalid Ethereum address in ${envName}: ${address}`)
-    }
-}
-
 function validateNextAuthSecret(secret: string): void {
     if (knownWeakSecrets.has(secret)) {
         throw new Error('NEXTAUTH_SECRET is using a known weak/default value')
@@ -60,15 +49,7 @@ function validateNextAuthSecret(secret: string): void {
     }
 }
 
-function validateChain(chain: string): asserts chain is 'mainnet' | 'sepolia' {
-    if (!supportedChains.has(chain)) {
-        throw new Error(`NEXT_PUBLIC_CHAIN must be one of: mainnet, sepolia. Received: ${chain}`)
-    }
-}
-
 function buildServerEnv(): ServerEnv {
-    const chain = readRequiredEnv('NEXT_PUBLIC_CHAIN')
-    validateChain(chain)
     const upstashUrl = process.env.UPSTASH_REDIS_REST_URL?.trim()
     const upstashToken = process.env.UPSTASH_REDIS_REST_TOKEN?.trim()
 
@@ -80,17 +61,12 @@ function buildServerEnv(): ServerEnv {
         DATABASE_PATH: readRequiredEnv('DATABASE_PATH'),
         NEXTAUTH_SECRET: readRequiredEnv('NEXTAUTH_SECRET'),
         NEXTAUTH_URL: readRequiredEnv('NEXTAUTH_URL'),
-        NEXT_PUBLIC_BASIC_INCOME_CONTRACT: readRequiredEnv('NEXT_PUBLIC_BASIC_INCOME_CONTRACT'),
-        NEXT_PUBLIC_CHAIN: chain,
-        NEXT_PUBLIC_STAKING_CONTRACT: readRequiredEnv('NEXT_PUBLIC_STAKING_CONTRACT'),
         UPSTASH_REDIS_REST_TOKEN: upstashToken,
         UPSTASH_REDIS_REST_URL: upstashUrl
     }
 
     validateUrl(env.NEXTAUTH_URL, 'NEXTAUTH_URL')
     validateNextAuthSecret(env.NEXTAUTH_SECRET)
-    validateAddress(env.NEXT_PUBLIC_BASIC_INCOME_CONTRACT, 'NEXT_PUBLIC_BASIC_INCOME_CONTRACT')
-    validateAddress(env.NEXT_PUBLIC_STAKING_CONTRACT, 'NEXT_PUBLIC_STAKING_CONTRACT')
     if (env.UPSTASH_REDIS_REST_URL) {
         validateUrl(env.UPSTASH_REDIS_REST_URL, 'UPSTASH_REDIS_REST_URL')
     }
