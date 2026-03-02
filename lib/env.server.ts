@@ -28,6 +28,20 @@ function readRequiredEnv(name: string): string {
     return trimmed
 }
 
+function readOptionalEnv(name: string, fallback: string): string {
+    const value = process.env[name]
+    if (!value) {
+        return fallback
+    }
+
+    const trimmed = value.trim()
+    if (!trimmed) {
+        return fallback
+    }
+
+    return trimmed
+}
+
 function validateUrl(urlValue: string, envName: string): void {
     try {
         const parsedUrl = new URL(urlValue)
@@ -58,7 +72,7 @@ function buildServerEnv(): ServerEnv {
     }
 
     const env: ServerEnv = {
-        DATABASE_PATH: readRequiredEnv('DATABASE_PATH'),
+        DATABASE_PATH: readOptionalEnv('DATABASE_PATH', '/tmp/votes.db'),
         NEXTAUTH_SECRET: readRequiredEnv('NEXTAUTH_SECRET'),
         NEXTAUTH_URL: readRequiredEnv('NEXTAUTH_URL'),
         UPSTASH_REDIS_REST_TOKEN: upstashToken,
